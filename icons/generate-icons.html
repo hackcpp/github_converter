@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图标生成工具</title>
+  <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        max-width: 1000px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f6f8fa;
+      }
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      h1 {
+        color: #24292e;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+      .canvas-container {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        margin: 20px 0;
+      }
+      .canvas-wrapper {
+        text-align: center;
+      }
+      canvas {
+        border: 1px solid #ddd;
+        background: #24292e;
+        border-radius: 16px; /* 显示圆角效果 */
+        box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      }
+      .size-label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #555;
+      }
+      .controls {
+        text-align: center;
+        margin: 30px 0;
+      }
+      button {
+        padding: 12px 24px;
+        margin: 8px;
+        background: #0366d6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.2s;
+      }
+      button:hover {
+        background: #0256cc;
+      }
+      button.secondary {
+        background: #6f42c1;
+      }
+      button.secondary:hover {
+        background: #5a32a3;
+      }
+      button.success {
+        background: #2ea44f;
+      }
+      button.success:hover {
+        background: #22863a;
+      }
+      .info {
+        background: #f6f8fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 20px;
+        border-left: 4px solid #0366d6;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+      }
+      .feature {
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #e1e4e8;
+      }
+      .feature h4 {
+        margin: 0 0 8px 0;
+        color: #24292e;
+      }
+      .feature p {
+        margin: 0;
+        color: #586069;
+        font-size: 14px;
+      }
+    </style>
+</head>
+<body>
+  <h1>🎨 GitHub URL转换器 - 圆角图标生成器</h1>
+  
+  <div class="canvas-container">
+    <div class="canvas-wrapper">
+      <canvas id="canvas16" width="16" height="16"></canvas>
+      <span class="size-label">16x16</span>
+    </div>
+    <div class="canvas-wrapper">
+      <canvas id="canvas48" width="48" height="48"></canvas>
+      <span class="size-label">48x48</span>
+    </div>
+    <div class="canvas-wrapper">
+      <canvas id="canvas128" width="128" height="128"></canvas>
+      <span class="size-label">128x128</span>
+    </div>
+  </div>
+  
+  <div class="controls">
+    <button onclick="generateAllIcons()">🎨 生成所有图标</button>
+    <button class="secondary" onclick="downloadAllIcons()">📥 批量下载</button>
+    <button class="success" onclick="downloadIndividualIcons()">💾 单独下载</button>
+  </div>
+  
+  <div class="features">
+    <div class="feature">
+      <h4>✨ 圆角设计</h4>
+      <p>所有图标都采用现代化的圆角设计，更符合当前的设计趋势</p>
+    </div>
+    <div class="feature">
+      <h4>🎯 多尺寸支持</h4>
+      <p>支持16x16、48x48、128x128三种尺寸，满足不同场景需求</p>
+    </div>
+    <div class="feature">
+      <h4>⚡ 一键生成</h4>
+      <p>点击按钮即可生成所有尺寸的图标，方便快捷</p>
+    </div>
+    <div class="feature">
+      <h4>📱 高清质量</h4>
+      <p>使用Canvas生成PNG格式，保证图标清晰度和质量</p>
+    </div>
+  </div>
+
+  <div class="info">
+    <h3>使用说明：</h3>
+    <ol>
+      <li><strong>生成图标</strong>：点击"生成所有图标"按钮，预览将显示在上方</li>
+      <li><strong>批量下载</strong>：点击"批量下载"会下载一个包含所有尺寸的ZIP文件</li>
+      <li><strong>单独下载</strong>：点击"单独下载"可以分别下载每个尺寸的PNG文件</li>
+      <li><strong>替换文件</strong>：将下载的图标文件重命名为 icon16.png, icon48.png, icon128.png</li>
+      <li><strong>更新扩展</strong>：将图标文件放置在 icons/ 目录下，重新加载扩展即可</li>
+    </ol>
+    
+    <h4>设计特点：</h4>
+    <ul>
+      <li>深色背景 (#24292e) 配合白色文字，经典GitHub风格</li>
+      <li>圆角设计，现代化外观</li>
+      <li>绿色和蓝色箭头表示转换功能</li>
+      <li>文字"GH"简洁明了，小尺寸下依然清晰可辨</li>
+    </ul>
+  </div>
+  
+  <script>
+    // 圆角半径配置
+    const borderRadius = {
+      16: 4,
+      48: 8,
+      128: 16
+    };
+    
+    function drawRoundedRect(ctx, x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+    
+    function drawIcon(ctx, size) {
+      const radius = borderRadius[size];
+      const centerX = size / 2;
+      const centerY = size / 2;
+      
+      // 清空画布
+      ctx.clearRect(0, 0, size, size);
+      
+      // 绘制圆角背景
+      drawRoundedRect(ctx, 0, 0, size, size, radius);
+      ctx.fillStyle = '#24292e';
+      ctx.fill();
+      
+      // 绘制边框高光效果
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      
+      // 绘制文字 "GH"
+      ctx.fillStyle = '#ffffff';
+      const fontSize = Math.floor(size * 0.45);
+      ctx.font = `bold ${fontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('GH', centerX, centerY);
+      
+      // 绘制箭头（只在较大尺寸时显示）
+      if (size >= 48) {
+        const arrowSize = size * 0.18;
+        
+        // 右箭头 (绿色)
+        ctx.strokeStyle = '#2ea44f';
+        ctx.lineWidth = Math.max(2, size / 25);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        ctx.beginPath();
+        ctx.moveTo(centerX + arrowSize * 0.3, centerY);
+        ctx.lineTo(centerX + arrowSize * 0.6, centerY);
+        ctx.moveTo(centerX + arrowSize * 0.45, centerY - arrowSize * 0.12);
+        ctx.lineTo(centerX + arrowSize * 0.6, centerY);
+        ctx.lineTo(centerX + arrowSize * 0.45, centerY + arrowSize * 0.12);
+        ctx.stroke();
+        
+        // 左箭头 (蓝色)
+        ctx.strokeStyle = '#0366d6';
+        ctx.beginPath();
+        ctx.moveTo(centerX - arrowSize * 0.3, centerY);
+        ctx.lineTo(centerX - arrowSize * 0.6, centerY);
+        ctx.moveTo(centerX - arrowSize * 0.45, centerY - arrowSize * 0.12);
+        ctx.lineTo(centerX - arrowSize * 0.6, centerY);
+        ctx.lineTo(centerX - arrowSize * 0.45, centerY + arrowSize * 0.12);
+        ctx.stroke();
+      }
+    }
+    
+    function generateAllIcons() {
+      const sizes = [16, 48, 128];
+      
+      sizes.forEach(size => {
+        const canvas = document.getElementById(`canvas${size}`);
+        const ctx = canvas.getContext('2d');
+        drawIcon(ctx, size);
+      });
+    }
+    
+    function downloadIcon(size) {
+      const canvas = document.createElement('canvas');
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      
+      drawIcon(ctx, size);
+      
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `icon${size}.png`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }, 'image/png');
+    }
+    
+    function downloadAllIcons() {
+      // 这里需要使用第三方库如JSZip来创建ZIP文件
+      // 为了简化，我们提供单独下载的选项
+      alert('批量下载功能需要JSZip库支持。请使用"单独下载"功能下载所有图标。');
+      downloadIndividualIcons();
+    }
+    
+    function downloadIndividualIcons() {
+      const sizes = [16, 48, 128];
+      
+      sizes.forEach(size => {
+        setTimeout(() => {
+          downloadIcon(size);
+        }, size * 100); // 错开下载时间
+      });
+    }
+    
+    // 页面加载时自动生成预览
+    window.onload = generateAllIcons;
+  </script>
+</body>
+</html>
+

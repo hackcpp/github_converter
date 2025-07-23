@@ -31,3 +31,11 @@ h3 {
 .action-btn:hover {
   background-color: #0356b6;
 }
+
+.status-message {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  min-height: 16px;
+  transition: all 0.3s ease;
+}
