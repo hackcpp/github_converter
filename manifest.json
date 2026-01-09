@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "GitHub URL转换器",
+  "name": "RepoJump",
   "version": "1.0.1",
   "description": "快速在GitHub、CodeWiki和GitHub1s之间切换，支持键盘快捷键，提升开发效率",
   "icons": {

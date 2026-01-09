@@ -1,4 +1,4 @@
-# GitHub URL转换器 Chrome扩展
+# RepoJump - GitHub代码浏览加速器
 
 ## 功能
 - 在GitHub代码页面一键切换到DeepWiki
